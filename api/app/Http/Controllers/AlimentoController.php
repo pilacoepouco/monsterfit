@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produto;
+use App\Models\Alimento;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class ProdutoController extends Controller
+class AlimentoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        return Produto::all();
+
+        $alimento = DB::table('alimento')->get();
+        return response()->json($alimento);
     }
 
     /**
@@ -35,31 +38,39 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $produto = new Produto();
-        $produto->nome = $request->nome;
-        $produto->preco = $request->preco;
-        $produto->descricao = $request->descricao;
-        $produto->save();
-        return "Sucesso";
+        $alimento = new Alimento([
+            'nome'=>$request->nome,
+            'proteinas'=>$request->proteinas,
+            'carboidrato'=>$request->carboidrato,
+            'gordura'=>$request->gordura,
+            'calorias_totais'=>$request->calorias_totais,
+            'gramas'=>$request->gramas,
+        ]);
+
+        $alimento->save();
+        return response()->json([
+            'statusText' => "Alimento inserido com sucesso"
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Alimento  $alimento
      * @return \Illuminate\Http\Response
      */
-    public function show(Produto $produto)
+    public function show(Alimento $alimento)
     {
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Alimento  $alimento
      * @return \Illuminate\Http\Response
      */
-    public function edit(Produto $produto)
+    public function edit(Alimento $alimento)
     {
         //
     }
@@ -68,27 +79,22 @@ class ProdutoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Alimento  $alimento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produto $produto)
+    public function update(Request $request, Alimento $alimento)
     {
-        $produto->nome = $request->nome;
-        $produto->preco = $request->preco;
-        $produto->descricao = $request->descricao;
-        $produto->save();
-        return "Alterado";
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Alimento  $alimento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy(Alimento $alimento)
     {
-        $produto->delete();
-        return "Excluido";
+        //
     }
 }

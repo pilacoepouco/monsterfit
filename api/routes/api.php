@@ -17,3 +17,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('alimentos', 'AlimentoController@index');
+Route::post('insertAlimento', 'AlimentoController@store');
+
+Route::resource('produtos', ProdutoController::class);
+
+
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/login', [UserAuthController::class, 'login']);
+    Route::post('/signup', [UserAuthController::class, 'signup']);
+
+
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('/logout', [UserAuthController::class, 'logout']);
+    });
+});
+
+Route::resource('users', UsuarioController::class);
+Route::resource('dietas', DietaController::class);
+// Route::put('produtos/{produto}',"Produto")
